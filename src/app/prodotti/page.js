@@ -14,6 +14,8 @@ import HouseRoundedIcon from '@mui/icons-material/HouseRounded';
 import AutoAwesomeRoundedIcon from '@mui/icons-material/AutoAwesomeRounded';
 import LunchDiningRoundedIcon from '@mui/icons-material/LunchDiningRounded';
 import FaceRetouchingNaturalIcon from '@mui/icons-material/FaceRetouchingNatural';
+import CancelIcon from '@mui/icons-material/Cancel';
+import Link from "next/link";
 
 async function fetchProducts() {
     try {
@@ -46,20 +48,19 @@ export default function Prodotti() {
     console.log("Prodotti", products);
 
     const categories = [
-        { name: "groceries", icon: <LunchDiningRoundedIcon /> },
-        { name: "beauty", icon: <AutoAwesomeRoundedIcon /> },
-        { name: "furniture", icon: <HouseRoundedIcon /> },
-        { name: "fragrances", icon: <FaceRetouchingNaturalIcon /> }
+        { name: "groceries",    icon: <LunchDiningRoundedIcon />    },
+        { name: "beauty",       icon: <AutoAwesomeRoundedIcon />    },
+        { name: "furniture",    icon: <HouseRoundedIcon />          },
+        { name: "fragrances",   icon: <FaceRetouchingNaturalIcon /> },
+        { name: null,           icon: <CancelIcon />                }
     ];
 
     const handleFilter = (category) => {
-        if (selectedCategory === category) {
-            setSelectedCategory(null);
-            setFilteredProducts(products);
+        setSelectedCategory(category);
+        if (category) {
+            setFilteredProducts(products.filter((product) => product.category === category));
         } else {
-            setSelectedCategory(category);
-            const filtered = products.filter((product) => product.category === category);
-            setFilteredProducts(filtered);
+            setFilteredProducts(products);
         }
     };
 
@@ -68,18 +69,19 @@ export default function Prodotti() {
             <Typography variant="h3" gutterBottom>
                 Lista Prodotti
             </Typography>
-            <Box sx={{ display: "flex", justifyContent: "center", gap: 2, mb: 3, flexWrap: "wrap" }}>
+            <Box sx={{ display: "flex", justifyContent: "center", gap: 2, my: 5, flexWrap: "wrap" }}>
                 {categories.map((cat) => (
                     <Chip
                         key={cat.name}
                         icon={cat.icon}
-                        label={cat.name}
+                        label={cat.name ? cat.name : ""}
                         variant={selectedCategory === cat.name ? "filled" : "outlined"}
                         color={selectedCategory === cat.name ? "primary" : "default"}
                         onClick={() => handleFilter(cat.name)}
-                        sx={{ fontSize: "16px", p: 1 }}
+                        sx={{ fontSize: "16px", p: 2 }}
                     />
                 ))}
+
             </Box>
             <Grid container spacing={3}>
                 {filteredProducts.length === 0 ? (
@@ -125,13 +127,17 @@ export default function Prodotti() {
                                     ))}
                                 </Swiper>
                             </Box>
-                            <Typography variant="h6" sx={{ mt: 1 }}>
-                                {product.title}
-                            </Typography>
+                            <Link href={`/prodotti/${product.id}`} passHref>
+                                <Typography variant="h6" sx={{ mt: 1 }}>
+                                    {product.title}
+                                </Typography>
+                            </Link>
                             <Typography variant="h5" sx={{ color: "green", mt: 1 }}>
                                 ${product.price}
                             </Typography>
-                            <Typography variant="body2">{product.availabilityStatus}</Typography>
+                            <Typography variant="body2">
+                                {product.availabilityStatus}
+                            </Typography>
                         </Grid>
                     ))
                 )}
