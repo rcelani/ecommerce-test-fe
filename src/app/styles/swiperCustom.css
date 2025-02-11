@@ -1,0 +1,22 @@
+/* frecce dello swiper */
+.swiper-button-prev,
+.swiper-button-next {
+    color: rgba(0, 0, 0, 0.5);
+    transition: color 0.3s ease;
+}
+
+.swiper-button-prev:hover,
+.swiper-button-next:hover {
+    color: rgba(0, 0, 0, 0.9);
+}
+
+/* paginazione (dot) */
+.swiper-pagination-bullet {
+    background-color: rgba(0, 0, 0, 0.3);
+    transition: background-color 0.3s ease, transform 0.2s ease;
+}
+
+.swiper-pagination-bullet-active {
+    background-color: rgba(0, 0, 0, 0.9);
+    transform: scale(1.2);
+}
