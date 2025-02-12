@@ -12,12 +12,12 @@ export default function Home() {
         Benvenuto nel nostro Ecommerce
       </Typography>
       <Typography variant="h6" paragraph>
-        I migliori prodotti sul mercato al miglior prezzo!
+        I nostri prodotti e tutte le novità del mercato a miglior prezzo!
       </Typography>
       <Button
         variant="contained"
         color="primary"
-        onClick={() => router.push("/prodotti")}
+        onClick={() => router.push("/products")}
       >
         Esplora Prodotti
       </Button>

@@ -4,16 +4,6 @@ import { useEffect, useState, use } from "react";
 import { useRouter } from "next/navigation";
 import { CircularProgress, Container, Typography } from "@mui/material";
 
-async function fetchProductById(id) {
-    try {
-        const response = await fetch(`https://dummyjson.com/products/${id}`);
-        const data = await response.json();
-        return data;
-    } catch (error) {
-        console.error("Errore nel recupero del prodotto:", error);
-        return null;
-    }
-}
 
 export default function DettaglioProdotti({ params }) {
 
@@ -22,12 +12,10 @@ export default function DettaglioProdotti({ params }) {
     const [product, setProduct] = useState(null);
 
     useEffect(() => {
-        const loadProduct = async () => {
-            const productData = await fetchProductById(id);
-            setProduct(productData);
-        };
-
-        loadProduct();
+        fetch(`https://dummyjson.com/products/${id}`)
+            .then((res) => res.json())
+            .then((data) => setProduct(data))
+            .catch((error) => console.error("Errore nel recupero del prodotto:", error));
     }, [id]);
 
     if (!product) {
