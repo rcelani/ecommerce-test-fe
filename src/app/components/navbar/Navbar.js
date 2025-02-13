@@ -1,9 +1,14 @@
+'use client'
+
 import Link from "next/link";
-import { AppBar, Toolbar, Button, Typography } from "@mui/material";
+import { AppBar, Toolbar, Button, Typography, Badge } from "@mui/material";
+import ShoppingCartIcon from '@mui/icons-material/ShoppingCart';
+import { useCart } from "@/app/context/ChartContext";
 
 export default function Navbar() {
-    /* implementare icon carrello + conteggio di prodotti inseriti all'utente */
-    /* rendere la navbar responsive (necessaria icon menù laterale??) */
+
+    const { cart } = useCart();
+
     return (
         <AppBar position="static">
             <Toolbar>
@@ -16,9 +21,9 @@ export default function Navbar() {
                 <Button color="inherit" component={Link} href="/products">
                     Prodotti
                 </Button>
-                <Button color="inherit" component={Link} href="/carrello">
-                    Carrello
-                </Button>
+                <Badge badgeContent={cart.length} color="error">
+                    <ShoppingCartIcon />
+                </Badge>
             </Toolbar>
         </AppBar>
     )

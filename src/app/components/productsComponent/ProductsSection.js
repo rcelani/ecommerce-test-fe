@@ -1,10 +1,10 @@
-import { 
-    Box, 
-    Button, 
-    CircularProgress, 
-    Container, 
-    Grid, 
-    Typography 
+import {
+    Box,
+    Button,
+    CircularProgress,
+    Container,
+    Grid,
+    Typography
 } from "@mui/material";
 import Link from "next/link";
 
@@ -14,8 +14,15 @@ import "swiper/css";
 import "swiper/css/navigation";
 import "swiper/css/pagination";
 import "../../styles/swiperCustom.css";
+import { useCart } from "@/app/context/ChartContext";
 
 export default function ProductsSection({ filteredProducts }) {
+
+    const { addToCart, removeFromChart } = useCart();
+
+    const handleAddToCart = (product) => {
+        addToCart(product);
+    };
 
     const getAvailabilityColor = (avaibility) => {
         switch (avaibility) {
@@ -40,77 +47,83 @@ export default function ProductsSection({ filteredProducts }) {
             ) : (
                 /* 
                     - Implementare la visualizzazione in delle card molto semplici e cliccabili
-                    - implementare animazione alla card (se necessaria)
-                    - ridefinire tutte le size
-                    - aggiungere colori differenti in base alla loro disponibilità
                     - aggiungere button "Aggiungi al carrello" + funzionalità
                 */
                 filteredProducts.map((product) => (
-                    <Grid 
-                        item 
-                        key={product.id} 
-                        xs={12} sm={6} md={3} 
-                        style={{ padding: 30 }}
+                    <Grid
+                        item
+                        key={product.id}
+                        xs={12} sm={6} md={6} lg={4}
+                        sx={{ padding: 2 }}
                     >
-                        <Box sx={{ p: 'auto'}}>
+                        <Box
+                            sx={{
+                                border: "1px solid black",
+                                borderRadius: "8px",
+                                overflow: "hidden",
+                                backgroundColor: "#fff",
+                                boxShadow: "2px 2px 10px rgba(0,0,0,0.1)"
+                            }}
+                        >
                             <Swiper
-                                /* spaceBetween={10} */
-                                /* slidesPerView={1} */
                                 loop={true}
                                 navigation={true}
                                 pagination={{ clickable: true }}
                                 modules={[Navigation, Pagination]}
-                                style={{ borderRadius: "10px", overflow: "hidden" }}
                                 className="custom-swiper"
                             >
                                 {product.images.map((img, index) => (
                                     <SwiperSlide key={index}>
-                                        <Box style={{
+                                        <Box sx={{
                                             width: "100%",
                                             height: "250px",
                                             display: "flex",
                                             justifyContent: "center",
                                             alignItems: "center",
                                             overflow: "hidden",
-                                            borderRadius: "8px"
+                                            backgroundColor: "#f5f5f5",
+                                            p: 3
                                         }}>
                                             <Box
                                                 component="img"
                                                 src={img}
                                                 alt={`Image ${product.title}`}
-                                                style={{
+                                                sx={{
                                                     width: "100%",
-                                                    height: "auto",
-                                                    objectFit: "cover",
-                                                    borderRadius: "8px",
+                                                    height: "100%",
+                                                    objectFit: "contain"
                                                 }}
                                             />
                                         </Box>
                                     </SwiperSlide>
                                 ))}
                             </Swiper>
+
+                            <Box sx={{ padding: 2 }}>
+                                <Link href={`/prodotti/${product.id}`} passHref>
+                                    <Typography sx={{ height: '5vh', width: '100%', mt: 1, textAlign: "left" }}>
+                                        {product.title}
+                                    </Typography>
+                                </Link>
+                                <Typography sx={{ color: "black", my: 3, textAlign: "left" }}>
+                                    ${product.price}
+                                </Typography>
+                                <Typography
+                                    variant="body2"
+                                    sx={{ color: getAvailabilityColor(product.availabilityStatus), fontWeight: "bold", textAlign: "left" }}
+                                >
+                                    {product.availabilityStatus}
+                                </Typography>
+                                <Button
+                                    variant="contained"
+                                    color="primary"
+                                    sx={{ mt: 2, width: "100%" }}
+                                    onClick={handleAddToCart(product)}
+                                >
+                                    Aggiungi al carrello
+                                </Button>
+                            </Box>
                         </Box>
-                        <Link href={`/prodotti/${product.id}`} passHref>
-                            <Typography variant="h6" sx={{ mt: 1 }}>
-                                {product.title}
-                            </Typography>
-                        </Link>
-                        <Typography variant="h5" sx={{ color: "black", mt: 1 }}>
-                            ${product.price}
-                        </Typography>
-                        <Typography 
-                            variant="body2"
-                            sx={{ color: getAvailabilityColor(product.availabilityStatus), fontWeight: "bold" }}
-                        >
-                            {product.availabilityStatus}
-                        </Typography>
-                        <Button 
-                            variant="contained" 
-                            color="primary" 
-                            sx={{ mt: 2, width: "100%" }}
-                        >
-                            Aggiungi al carrello
-                        </Button>
                     </Grid>
                 ))
             )}
