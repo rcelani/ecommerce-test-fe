@@ -14,7 +14,7 @@ import "swiper/css";
 import "swiper/css/navigation";
 import "swiper/css/pagination";
 import "../../styles/swiperCustom.css";
-import { useCart } from "@/app/context/ChartContext";
+import { useCart } from "@/app/context/CartContext";
 
 export default function ProductsSection({ filteredProducts }) {
 
@@ -100,28 +100,42 @@ export default function ProductsSection({ filteredProducts }) {
                             </Swiper>
 
                             <Box sx={{ padding: 2 }}>
-                                <Link href={`/prodotti/${product.id}`} passHref>
+                                <Link href={`../../products/${product.id}`} passHref>
                                     <Typography sx={{ height: '5vh', width: '100%', mt: 1, textAlign: "left" }}>
                                         {product.title}
                                     </Typography>
                                 </Link>
-                                <Typography sx={{ color: "black", my: 3, textAlign: "left" }}>
-                                    ${product.price}
+                                <Typography sx={{ color: "black", mt: 3, textAlign: "left" }}>
+                                    ${product?.price}
                                 </Typography>
+                                {product.discountPercentage > 0 && (
+                                    <Typography variant="body2" color="error" sx={{ my: 1, textAlign: "left" }}>
+                                        <s>€{product.price}</s> (-{product.discountPercentage}%)
+                                    </Typography>
+                                )}
                                 <Typography
                                     variant="body2"
                                     sx={{ color: getAvailabilityColor(product.availabilityStatus), fontWeight: "bold", textAlign: "left" }}
                                 >
                                     {product.availabilityStatus}
                                 </Typography>
-                                <Button
-                                    variant="contained"
-                                    color="primary"
-                                    sx={{ mt: 2, width: "100%" }}
-                                    onClick={handleAddToCart(product)}
-                                >
-                                    Aggiungi al carrello
-                                </Button>
+                                <Box sx={{ display: 'flex', direction: 'row', width: '100%', mt: 1, gap: 2 }}>
+                                    <Button
+                                        variant="contained"
+                                        color="primary"
+                                        sx={{ mt: 2, width: '100%' }}
+                                        onClick={() => handleAddToCart(product)}
+                                    >
+                                        Aggiungi al carrello
+                                    </Button>
+                                    {/* <Button 
+                                        variant="outlined" 
+                                        color="secondary" 
+                                        onClick={() => removeFromCart(product.id)}
+                                    >
+                                        Rimuovi dal carrello
+                                    </Button> */}
+                                </Box>
                             </Box>
                         </Box>
                     </Grid>

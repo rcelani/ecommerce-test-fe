@@ -10,10 +10,10 @@ export default function FilterSection({ selectedCategories, handleFilter, handle
     const [priceRange, setPriceRange] = useState([0, 3000]);
 
     const categories = [
-        { name: "groceries",    icon: <LunchDiningRoundedIcon />    },
         { name: "beauty",       icon: <AutoAwesomeRoundedIcon />    },
+        { name: "fragrances",   icon: <FaceRetouchingNaturalIcon /> },
+        { name: "groceries",    icon: <LunchDiningRoundedIcon />    },
         { name: "furniture",    icon: <HouseRoundedIcon />          },
-        { name: "fragrances",   icon: <FaceRetouchingNaturalIcon /> }
     ];
 
     const handlePriceChange = (event, newValue) => {
